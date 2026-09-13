@@ -1,0 +1,113 @@
+// Futon Multi-Tenant Workspace Platform
+// Prisma Schema Definition
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+enum MembershipStatus {
+  INVITED
+  ACTIVE
+}
+
+model Company {
+  id                 String       @id @default(uuid())
+  name               String
+  slug               String       @unique
+  stripeCustomerId   String?      @unique @map("stripe_customer_id")
+  subscriptionStatus String       @default("free") @map("subscription_status")
+  plan               String       @default("free")
+  createdAt          DateTime     @default(now()) @map("created_at")
+  updatedAt          DateTime     @updatedAt @map("updated_at")
+  deletedAt          DateTime?    @map("deleted_at")
+
+  memberships        Membership[]
+  invitations        Invitation[]
+  auditLogs          AuditLog[]
+
+  @@map("companies")
+}
+
+model User {
+  id                   String       @id @default(uuid())
+  email                String       @unique
+  passwordHash         String       @map("password_hash")
+  name                 String
+  emailVerified        Boolean      @default(false) @map("email_verified")
+  verificationToken    String?      @map("verification_token")
+  resetPasswordToken   String?      @map("reset_password_token")
+  resetPasswordExpires DateTime?    @map("reset_password_expires")
+  createdAt            DateTime     @default(now()) @map("created_at")
+  updatedAt            DateTime     @updatedAt @map("updated_at")
+
+  memberships          Membership[]
+  auditLogs            AuditLog[]
+
+  @@map("users")
+}
+
+model Membership {
+  id        String           @id @default(uuid())
+  userId    String           @map("user_id")
+  companyId String           @map("company_id")
+  role      Role             @default(MEMBER)
+  status    MembershipStatus @default(ACTIVE)
+  joinedAt  DateTime         @default(now()) @map("joined_at")
+  createdAt DateTime         @default(now()) @map("created_at")
+  updatedAt DateTime         @updatedAt @map("updated_at")
+
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company   Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, companyId])
+  @@index([companyId])
+  @@index([userId])
+  @@map("memberships")
+}
+
+model Invitation {
+  id         String    @id @default(uuid())
+  companyId  String    @map("company_id")
+  email      String
+  role       Role      @default(MEMBER)
+  token      String    @unique
+  expiresAt  DateTime  @map("expires_at")
+  acceptedAt DateTime? @map("accepted_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  company    Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@index([companyId])
+  @@index([email])
+  @@index([token])
+  @@map("invitations")
+}
+
+model AuditLog {
+  id          String   @id @default(uuid())
+  companyId   String   @map("company_id")
+  actorUserId String?  @map("actor_user_id")
+  action      String
+  target      String?
+  metadata    Json?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  company     Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  actor       User?    @relation(fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@index([companyId])
+  @@index([actorUserId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}

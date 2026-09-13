@@ -12,16 +12,16 @@
 |---|---|
 | **Last Updated** | 2026-09-13 |
 | **Current Phase** | Phase 1: Foundation |
-| **Current Task** | 1.1 Database Setup |
+| **Current Task** | 1.1.1 / 1.1.4 Database connection & migration, followed by 1.2 Auth Endpoints |
 | **Total Tasks** | 91 |
-| **Completed** | 8 / 91 |
-| **Progress** | 9% |
+| **Completed** | 17 / 91 |
+| **Progress** | 19% |
 
 ### Phase Progress
 
 | Phase | Tasks | Done | Status |
 |---|---|---|---|
-| Phase 1: Foundation | 28 | 8 | 🟡 In progress |
+| Phase 1: Foundation | 28 | 17 | 🟡 In progress |
 | Phase 2: Workspace Core | 30 | 0 | ⬜ Not started |
 | Phase 3: Billing | 14 | 0 | ⬜ Not started |
 | Phase 4: Hardening | 18 | 0 | ⬜ Not started |
@@ -38,11 +38,12 @@
 | Date | Note |
 |---|---|
 | 2026-09-13 | Project initialized. Implementation plan created and approved. |
-| 2026-09-13 | Section 1.0 completed: Git repo initialized, client/server workspace configured, CI/Dependabot, Prettier, jsconfig, base Express & Vite apps verified with passing tests. |
+| 2026-09-13 | Section 1.0 completed: Git repo initialized, client/server workspace configured, CI/Dependabot, Prettier, jsconfig, base Express & Vite apps verified with passing tests. Pushed to GitHub. |
+| 2026-09-13 | Prisma installed (`@prisma/client` + `prisma`), schema defined (`Company`, `User`, `Membership`, `Invitation`, `AuditLog`), indexes added, RLS SQL policies created. Scoped query helper and Pino tenant logger configured. Auth Zod schemas & validator implemented. Paused for break. Next up: DB connection/migration & Auth route endpoints. |
 
 ---
 
-## Phase 1: Foundation (8 / 28)
+## Phase 1: Foundation (17 / 28)
 
 **Goal:** Repo, tooling, database, ORM, auth, tenant-scoping middleware.
 
@@ -58,15 +59,15 @@
 
 ### 1.1 — Database Setup
 - [ ] **1.1.1** Provision free-tier managed PostgreSQL (Neon / Supabase)
-- [ ] **1.1.2** Install Prisma + `@prisma/client`, run `prisma init`
-- [ ] **1.1.3** Define Prisma schema (Company, User, Membership, Invitation, AuditLog)
+- [x] **1.1.2** Install Prisma + `@prisma/client`, run `prisma init`
+- [x] **1.1.3** Define Prisma schema (Company, User, Membership, Invitation, AuditLog)
 - [ ] **1.1.4** Run initial migration, verify tables
-- [ ] **1.1.5** Add database indexes on key columns
-- [ ] **1.1.6** Create RLS policies on tenant-scoped tables
+- [x] **1.1.5** Add database indexes on key columns
+- [x] **1.1.6** Create RLS policies on tenant-scoped tables
 
 ### 1.2 — Authentication
-- [ ] **1.2.1** Install auth deps (bcryptjs, jsonwebtoken, zod)
-- [ ] **1.2.2** Create Zod schemas for auth requests
+- [x] **1.2.1** Install auth deps (bcryptjs, jsonwebtoken, zod)
+- [x] **1.2.2** Create Zod schemas for auth requests
 - [ ] **1.2.3** `POST /api/auth/signup` (user + company + membership + JWT)
 - [ ] **1.2.4** `POST /api/auth/login`
 - [ ] **1.2.5** `POST /api/auth/refresh`
@@ -77,10 +78,10 @@
 ### 1.3 — Tenant-Scoping Middleware
 - [ ] **1.3.1** `authenticateToken` middleware (JWT verify → `req.user`)
 - [ ] **1.3.2** `requireRole(...roles)` middleware factory
-- [ ] **1.3.3** `scopedQuery(companyId)` tenant-scoping utility
-- [ ] **1.3.4** Prisma extension to `SET LOCAL app.current_company_id` for RLS
+- [x] **1.3.3** `scopedQuery(companyId)` tenant-scoping utility
+- [x] **1.3.4** Prisma extension to `SET LOCAL app.current_company_id` for RLS
 - [ ] **1.3.5** `attachCompanyContext` middleware (validate membership + populate `req.company`)
-- [ ] **1.3.6** Structured JSON logging with `companyId` + `requestId`
+- [x] **1.3.6** Structured JSON logging with `companyId` + `requestId`
 
 ### 1.4 — Redis & Background Jobs
 - [ ] **1.4.1** Provision Upstash Redis, install ioredis + bullmq
