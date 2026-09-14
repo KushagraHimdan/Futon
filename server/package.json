@@ -30,6 +30,6 @@
     "nodemon": "^3.1.9",
     "prisma": "6.4.1",
     "supertest": "^7.1.1",
-    "vitest": "^3.0.7"
+    "vitest": "^5.0.0"
   }
 }
