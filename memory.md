@@ -10,18 +10,18 @@
 
 | Metric | Value |
 |---|---|
-| **Last Updated** | 2026-09-13 |
+| **Last Updated** | 2026-09-14 |
 | **Current Phase** | Phase 1: Foundation |
-| **Current Task** | 1.1.1 / 1.1.4 Database connection & migration, followed by 1.2 Auth Endpoints |
+| **Current Task** | 1.2 Auth Endpoints (`signup`, `login`, `refresh`, `logout`) & 1.3 Tenant Scoping |
 | **Total Tasks** | 91 |
-| **Completed** | 17 / 91 |
-| **Progress** | 19% |
+| **Completed** | 19 / 91 |
+| **Progress** | 21% |
 
 ### Phase Progress
 
 | Phase | Tasks | Done | Status |
 |---|---|---|---|
-| Phase 1: Foundation | 28 | 17 | 🟡 In progress |
+| Phase 1: Foundation | 28 | 19 | 🟡 In progress |
 | Phase 2: Workspace Core | 30 | 0 | ⬜ Not started |
 | Phase 3: Billing | 14 | 0 | ⬜ Not started |
 | Phase 4: Hardening | 18 | 0 | ⬜ Not started |
@@ -40,10 +40,11 @@
 | 2026-09-13 | Project initialized. Implementation plan created and approved. |
 | 2026-09-13 | Section 1.0 completed: Git repo initialized, client/server workspace configured, CI/Dependabot, Prettier, jsconfig, base Express & Vite apps verified with passing tests. Pushed to GitHub. |
 | 2026-09-13 | Prisma installed (`@prisma/client` + `prisma`), schema defined (`Company`, `User`, `Membership`, `Invitation`, `AuditLog`), indexes added, RLS SQL policies created. Scoped query helper and Pino tenant logger configured. Auth Zod schemas & validator implemented. Paused for break. Next up: DB connection/migration & Auth route endpoints. |
+| 2026-09-14 | Section 1.1 completed: Neon PostgreSQL connected with connection pooling & direct URL configuration. Prisma CLI synced to stable 6.4.1. Schema pushed to Neon (`companies`, `users`, `memberships`, `invitations`, `audit_logs`). All PostgreSQL RLS policies applied and table connectivity verified. |
 
 ---
 
-## Phase 1: Foundation (17 / 28)
+## Phase 1: Foundation (19 / 28)
 
 **Goal:** Repo, tooling, database, ORM, auth, tenant-scoping middleware.
 
@@ -58,10 +59,10 @@
 - [x] **1.0.8** Add Dependabot / Snyk for dependency scanning
 
 ### 1.1 — Database Setup
-- [ ] **1.1.1** Provision free-tier managed PostgreSQL (Neon / Supabase)
+- [x] **1.1.1** Provision free-tier managed PostgreSQL (Neon / Supabase)
 - [x] **1.1.2** Install Prisma + `@prisma/client`, run `prisma init`
 - [x] **1.1.3** Define Prisma schema (Company, User, Membership, Invitation, AuditLog)
-- [ ] **1.1.4** Run initial migration, verify tables
+- [x] **1.1.4** Run initial migration, verify tables
 - [x] **1.1.5** Add database indexes on key columns
 - [x] **1.1.6** Create RLS policies on tenant-scoped tables
 

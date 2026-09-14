@@ -9,21 +9,25 @@ ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
 
 -- 2. Companies table policy
 -- Allow access only when the active company ID matches app.current_company_id
+DROP POLICY IF EXISTS company_tenant_isolation ON companies;
 CREATE POLICY company_tenant_isolation ON companies
   FOR ALL
   USING (id = NULLIF(current_setting('app.current_company_id', true), '')::text);
 
 -- 3. Memberships table policy
+DROP POLICY IF EXISTS membership_tenant_isolation ON memberships;
 CREATE POLICY membership_tenant_isolation ON memberships
   FOR ALL
   USING (company_id = NULLIF(current_setting('app.current_company_id', true), '')::text);
 
 -- 4. Invitations table policy
+DROP POLICY IF EXISTS invitation_tenant_isolation ON invitations;
 CREATE POLICY invitation_tenant_isolation ON invitations
   FOR ALL
   USING (company_id = NULLIF(current_setting('app.current_company_id', true), '')::text);
 
 -- 5. Audit Logs table policy
+DROP POLICY IF EXISTS audit_log_tenant_isolation ON audit_logs;
 CREATE POLICY audit_log_tenant_isolation ON audit_logs
   FOR ALL
   USING (company_id = NULLIF(current_setting('app.current_company_id', true), '')::text);
