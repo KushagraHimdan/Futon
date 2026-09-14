@@ -8,17 +8,13 @@ import { config } from '../config/index.js';
  * @returns {{ accessToken: string; refreshToken: string; expiresIn: string }}
  */
 export function generateTokens({ userId, email }) {
-  const accessToken = jwt.sign(
-    { userId, email },
-    config.jwt.accessSecret,
-    { expiresIn: config.jwt.accessExpiresIn }
-  );
+  const accessToken = jwt.sign({ userId, email }, config.jwt.accessSecret, {
+    expiresIn: config.jwt.accessExpiresIn,
+  });
 
-  const refreshToken = jwt.sign(
-    { userId },
-    config.jwt.refreshSecret,
-    { expiresIn: config.jwt.refreshExpiresIn }
-  );
+  const refreshToken = jwt.sign({ userId }, config.jwt.refreshSecret, {
+    expiresIn: config.jwt.refreshExpiresIn,
+  });
 
   return {
     accessToken,

@@ -48,7 +48,9 @@ export async function scopedQuery(companyId, callback) {
 
   return await prisma.$transaction(async (tx) => {
     // Set PostgreSQL session variable for Row Level Security
-    await tx.$executeRawUnsafe(`SET LOCAL app.current_company_id = '${companyId.replace(/'/g, "''")}'`);
+    await tx.$executeRawUnsafe(
+      `SET LOCAL app.current_company_id = '${companyId.replace(/'/g, "''")}'`
+    );
     return await callback(tx);
   });
 }

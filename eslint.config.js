@@ -34,11 +34,6 @@ export default [
     },
   },
   {
-    ignores: [
-      'node_modules/',
-      'client/dist/',
-      'server/node_modules/',
-      'client/node_modules/',
-    ],
+    ignores: ['node_modules/', 'client/dist/', 'server/node_modules/', 'client/node_modules/'],
   },
 ];

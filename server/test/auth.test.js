@@ -30,12 +30,10 @@ describe('Authentication Module & Tenant Context', { timeout: 25000 }, () => {
 
   describe('POST /api/auth/signup', () => {
     it('should reject signup with missing or invalid fields', async () => {
-      const res = await request(app)
-        .post('/api/auth/signup')
-        .send({
-          email: 'not-an-email',
-          password: 'short',
-        });
+      const res = await request(app).post('/api/auth/signup').send({
+        email: 'not-an-email',
+        password: 'short',
+      });
 
       expect(res.status).toBe(400);
       expect(res.body).toHaveProperty('error', 'Validation failed');
@@ -43,9 +41,7 @@ describe('Authentication Module & Tenant Context', { timeout: 25000 }, () => {
     });
 
     it('should successfully register a user and company workspace', async () => {
-      const res = await request(app)
-        .post('/api/auth/signup')
-        .send(testUser);
+      const res = await request(app).post('/api/auth/signup').send(testUser);
 
       expect(res.status).toBe(201);
       expect(res.body).toHaveProperty('user');
@@ -68,9 +64,7 @@ describe('Authentication Module & Tenant Context', { timeout: 25000 }, () => {
     });
 
     it('should reject duplicate email registration with 409 Conflict', async () => {
-      const res = await request(app)
-        .post('/api/auth/signup')
-        .send(testUser);
+      const res = await request(app).post('/api/auth/signup').send(testUser);
 
       expect(res.status).toBe(409);
       expect(res.body).toHaveProperty('error');
@@ -80,36 +74,30 @@ describe('Authentication Module & Tenant Context', { timeout: 25000 }, () => {
 
   describe('POST /api/auth/login', () => {
     it('should reject invalid password with 401', async () => {
-      const res = await request(app)
-        .post('/api/auth/login')
-        .send({
-          email: testUser.email,
-          password: 'WrongPassword999!',
-        });
+      const res = await request(app).post('/api/auth/login').send({
+        email: testUser.email,
+        password: 'WrongPassword999!',
+      });
 
       expect(res.status).toBe(401);
       expect(res.body).toHaveProperty('error', 'Invalid email or password');
     });
 
     it('should reject non-existent user with 401', async () => {
-      const res = await request(app)
-        .post('/api/auth/login')
-        .send({
-          email: 'nobody@nowhere-futon.dev',
-          password: 'Password123!',
-        });
+      const res = await request(app).post('/api/auth/login').send({
+        email: 'nobody@nowhere-futon.dev',
+        password: 'Password123!',
+      });
 
       expect(res.status).toBe(401);
       expect(res.body).toHaveProperty('error', 'Invalid email or password');
     });
 
     it('should authenticate user and return company workspace context', async () => {
-      const res = await request(app)
-        .post('/api/auth/login')
-        .send({
-          email: testUser.email,
-          password: testUser.password,
-        });
+      const res = await request(app).post('/api/auth/login').send({
+        email: testUser.email,
+        password: testUser.password,
+      });
 
       expect(res.status).toBe(200);
       expect(res.body.user.email).toBe(testUser.email.toLowerCase());
@@ -130,9 +118,7 @@ describe('Authentication Module & Tenant Context', { timeout: 25000 }, () => {
     });
 
     it('should issue new access token with valid refresh token', async () => {
-      const res = await request(app)
-        .post('/api/auth/refresh')
-        .send({ refreshToken });
+      const res = await request(app).post('/api/auth/refresh').send({ refreshToken });
 
       expect(res.status).toBe(200);
       expect(res.body.tokens).toHaveProperty('accessToken');
@@ -190,12 +176,10 @@ describe('Authentication Module & Tenant Context', { timeout: 25000 }, () => {
     });
 
     it('POST /api/auth/reset-password should reject invalid or expired reset token', async () => {
-      const res = await request(app)
-        .post('/api/auth/reset-password')
-        .send({
-          token: 'invalid-nonexistent-token',
-          newPassword: 'NewSecurePassword123!',
-        });
+      const res = await request(app).post('/api/auth/reset-password').send({
+        token: 'invalid-nonexistent-token',
+        newPassword: 'NewSecurePassword123!',
+      });
 
       expect(res.status).toBe(400);
       expect(res.body).toHaveProperty('error');

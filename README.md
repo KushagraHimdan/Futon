@@ -35,11 +35,13 @@ Futon/
 ## 🏁 Getting Started
 
 ### Prerequisites
+
 - Node.js >= 18
 - PostgreSQL instance
 - Redis instance
 
 ### Installation
+
 ```bash
 # Clone the repository
 git clone <repository-url>
@@ -60,4 +62,5 @@ npm run dev
 ```
 
 ## 📄 License
+
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

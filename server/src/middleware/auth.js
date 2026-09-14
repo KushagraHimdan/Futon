@@ -58,7 +58,9 @@ export async function attachCompanyContext(req, res, next) {
     // @ts-ignore
     const user = req.user;
     if (!user) {
-      return res.status(401).json({ error: 'Authentication required before attaching company context' });
+      return res
+        .status(401)
+        .json({ error: 'Authentication required before attaching company context' });
     }
 
     const requestedCompanyId = req.headers['x-company-id'] || req.query.companyId;
