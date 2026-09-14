@@ -12,16 +12,16 @@
 |---|---|
 | **Last Updated** | 2026-09-14 |
 | **Current Phase** | Phase 1: Foundation |
-| **Current Task** | 1.2 Auth Endpoints (`signup`, `login`, `refresh`, `logout`) & 1.3 Tenant Scoping |
+| **Current Task** | 1.4 Redis & Background Jobs / 1.5 Error Handling |
 | **Total Tasks** | 91 |
-| **Completed** | 19 / 91 |
-| **Progress** | 21% |
+| **Completed** | 28 / 91 |
+| **Progress** | 31% |
 
 ### Phase Progress
 
 | Phase | Tasks | Done | Status |
 |---|---|---|---|
-| Phase 1: Foundation | 28 | 19 | 🟡 In progress |
+| Phase 1: Foundation | 37 | 28 | 🟡 In progress |
 | Phase 2: Workspace Core | 30 | 0 | ⬜ Not started |
 | Phase 3: Billing | 14 | 0 | ⬜ Not started |
 | Phase 4: Hardening | 18 | 0 | ⬜ Not started |
@@ -41,10 +41,11 @@
 | 2026-09-13 | Section 1.0 completed: Git repo initialized, client/server workspace configured, CI/Dependabot, Prettier, jsconfig, base Express & Vite apps verified with passing tests. Pushed to GitHub. |
 | 2026-09-13 | Prisma installed (`@prisma/client` + `prisma`), schema defined (`Company`, `User`, `Membership`, `Invitation`, `AuditLog`), indexes added, RLS SQL policies created. Scoped query helper and Pino tenant logger configured. Auth Zod schemas & validator implemented. Paused for break. Next up: DB connection/migration & Auth route endpoints. |
 | 2026-09-14 | Section 1.1 completed: Neon PostgreSQL connected with connection pooling & direct URL configuration. Prisma CLI synced to stable 6.4.1. Schema pushed to Neon (`companies`, `users`, `memberships`, `invitations`, `audit_logs`). All PostgreSQL RLS policies applied and table connectivity verified. |
+| 2026-09-14 | Sections 1.2 & 1.3 completed: Bcrypt password hashing and JWT token utilities implemented. Auth routes & services for signup, login, refresh, logout, password reset, and email verification built and mounted. Tenant scoping middlewares (`authenticateToken`, `attachCompanyContext`, `requireRole`) implemented. 16 integration and health tests passing against live database. ESLint 9 configured and passing cleanly. |
 
 ---
 
-## Phase 1: Foundation (19 / 28)
+## Phase 1: Foundation (28 / 37)
 
 **Goal:** Repo, tooling, database, ORM, auth, tenant-scoping middleware.
 
@@ -69,19 +70,19 @@
 ### 1.2 — Authentication
 - [x] **1.2.1** Install auth deps (bcryptjs, jsonwebtoken, zod)
 - [x] **1.2.2** Create Zod schemas for auth requests
-- [ ] **1.2.3** `POST /api/auth/signup` (user + company + membership + JWT)
-- [ ] **1.2.4** `POST /api/auth/login`
-- [ ] **1.2.5** `POST /api/auth/refresh`
-- [ ] **1.2.6** `POST /api/auth/logout` (refresh token invalidation)
-- [ ] **1.2.7** Email verification flow (`POST /api/auth/verify-email`)
-- [ ] **1.2.8** Password reset flow (forgot + reset endpoints)
+- [x] **1.2.3** `POST /api/auth/signup` (user + company + membership + JWT)
+- [x] **1.2.4** `POST /api/auth/login`
+- [x] **1.2.5** `POST /api/auth/refresh`
+- [x] **1.2.6** `POST /api/auth/logout` (refresh token invalidation)
+- [x] **1.2.7** Email verification flow (`POST /api/auth/verify-email`)
+- [x] **1.2.8** Password reset flow (forgot + reset endpoints)
 
 ### 1.3 — Tenant-Scoping Middleware
-- [ ] **1.3.1** `authenticateToken` middleware (JWT verify → `req.user`)
-- [ ] **1.3.2** `requireRole(...roles)` middleware factory
+- [x] **1.3.1** `authenticateToken` middleware (JWT verify → `req.user`)
+- [x] **1.3.2** `requireRole(...roles)` middleware factory
 - [x] **1.3.3** `scopedQuery(companyId)` tenant-scoping utility
 - [x] **1.3.4** Prisma extension to `SET LOCAL app.current_company_id` for RLS
-- [ ] **1.3.5** `attachCompanyContext` middleware (validate membership + populate `req.company`)
+- [x] **1.3.5** `attachCompanyContext` middleware (validate membership + populate `req.company`)
 - [x] **1.3.6** Structured JSON logging with `companyId` + `requestId`
 
 ### 1.4 — Redis & Background Jobs

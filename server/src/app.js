@@ -6,6 +6,7 @@ import { pinoHttp } from 'pino-http';
 import { v4 as uuidv4 } from 'uuid';
 import { config } from './config/index.js';
 import { logger } from './lib/logger.js';
+import { authRouter } from './modules/auth/auth.routes.js';
 
 export const app = express();
 
@@ -49,6 +50,9 @@ app.get('/api/health', (req, res) => {
     env: config.env,
   });
 });
+
+// Authentication routes
+app.use('/api/auth', authRouter);
 
 // 404 Handler
 app.use((req, res) => {
